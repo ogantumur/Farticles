@@ -1,8 +1,8 @@
 #include "Matrices.h"
 namespace Matrices
 {
-	Matrix::Matrix(int _rows, int _cols)
-	{
+    Matrix::Matrix(int _rows, int _cols)
+    {
         rows = _rows;
         cols = _cols;
         //resize vector a
@@ -19,7 +19,7 @@ namespace Matrices
             a.at(i).resize(cols, 0);
         }*/
         a.resize(rows, vector<double>(cols, 0));
-	}
+    }
 
     ///Add each corresponding element.
     ///usage:  c = a + b;
@@ -111,29 +111,30 @@ namespace Matrices
         }
         return os;
     }
-}
 
-RotationMatrix::RotationMatrix(double theta) : Matrix(2, 2)
-{
-    a.at(0).at(0) = cos(theta);
-    a.at(0).at(1) = -sin(theta);
-    a.at(1).at(0) = sin(theta);
-    a.at(1).at(1) = cos(theta);
-}
 
-ScalingMatrix::ScalingMatrix(double scale) : Matrix(2, 2)
-{
-    a.at(0).at(0) = scale;
-    a.at(0).at(1) = 0;
-    a.at(1).at(0) = 0;
-    a.at(1).at(1) = scale;
-}
-
-TranslationMatrix::TranslationMatrix(double xShift, double yShift, int nCols) : Matrix(2, nCols)
-{
-    for (int i = 0; i < nCols; i++)
+    RotationMatrix::RotationMatrix(double theta) : Matrix(2, 2)
     {
-        a.at(0).at(i) = xShift;
-        a.at(1).at(i) = yShift;
+        a.at(0).at(0) = cos(theta);
+        a.at(0).at(1) = -sin(theta);
+        a.at(1).at(0) = sin(theta);
+        a.at(1).at(1) = cos(theta);
+    }
+
+    ScalingMatrix::ScalingMatrix(double scale) : Matrix(2, 2)
+    {
+        a.at(0).at(0) = scale;
+        a.at(0).at(1) = 0;
+        a.at(1).at(0) = 0;
+        a.at(1).at(1) = scale;
+    }
+
+    TranslationMatrix::TranslationMatrix(double xShift, double yShift, int nCols) : Matrix(2, nCols)
+    {
+        for (int i = 0; i < nCols; i++)
+        {
+            a.at(0).at(i) = xShift;
+            a.at(1).at(i) = yShift;
+        }
     }
 }

@@ -14,11 +14,11 @@ void Engine::run()
     cout << "Unit tests complete.  Starting engine..." << endl;
     while (m_Window.isOpen())
     {
-        c.restart();
-        c.getElapsedTime().asSeconds();
-        // convert to seconds???
+        Time dt = c.restart();
+        float dtAsSeconds = dt.asSeconds();
+
         input();
-        update(c.getElapsedTime().asSeconds());
+        update(dtAsSeconds);
         draw();
     }
 }
@@ -50,18 +50,17 @@ void Engine::input()
 
 void Engine::update(float dtAsSeconds)
 {
-    int i = 0;
-    while (i < m_particles.size())
+    auto it = m_particles.begin();
+    while (it != m_particles.end())
     {
-        if (m_particles[i].getTTL() > 0.0)
+        if (it->getTTL() > 0.0)
         {
-            m_particles[i].update(dtAsSeconds);
-            i++;
+            it->update(dtAsSeconds);
+            it++;
         }
         else
         {
-            m_particles.erase(m_particles.begin() + i);
-            // assign i???
+            it = m_particles.erase(it);
         }
     }
 }

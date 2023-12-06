@@ -148,12 +148,11 @@ Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosit
 {
     m_ttl = TTL;
     m_numPoints = numPoints;
-    m_radiansPerSec = (float)rand() / (RAND_MAX) * M_PI;
+    m_radiansPerSec = (float)rand() / (RAND_MAX)*M_PI;
 
     m_cartesianPlane.setCenter(0, 0);
     m_cartesianPlane.setSize(target.getSize().x, (-1.0) * target.getSize().y);
-    m_centerCoordinate = m_cartesianPlane.mapPixelToCoords(mouseClickPosition);
-    // help
+    m_centerCoordinate = target.mapPixelToCoords(mouseClickPosition);
 
     m_vx = (rand() % 401 + 100) * (rand() % 2 == 0 ? 1 : -1);
     m_vy = rand() % 401 + 100;
@@ -161,7 +160,7 @@ Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosit
     m_color1 = Color::White;
     m_color2 = Color(rand() % 256, rand() % 256, rand() % 256);
 
-    float theta = (float)rand() / (RAND_MAX) * M_PI / 2;
+    float theta = (float)rand() / (RAND_MAX)*M_PI / 2;
     float dTheta = 2 * M_PI / (numPoints - 1);
 
     for (int j = 0; j < numPoints; j++)
@@ -179,8 +178,7 @@ Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosit
 
 void Particle::draw(RenderTarget& target, RenderStates states) const
 {
-    VertexArray lines(TriangleFan, numPoints + 1);
-    // make new numPoints?
+    VertexArray lines(TriangleFan, m_numPoints + 1);
     Vector2f center(target.mapCoordsToPixel(m_centerCoordinate, m_cartesianPlane));
 
     lines[0].position = center;
@@ -188,11 +186,10 @@ void Particle::draw(RenderTarget& target, RenderStates states) const
 
     for (int j = 1; j <= m_numPoints; j++)
     {
-        lines[j].position = target.mapCoordsToPixel(Vector2f(m_A(0, j - 1), m_A(1, j - 1)), m_cartesianPlane);
-        // help
+        lines[j].position = (Vector2f)(target.mapCoordsToPixel(Vector2f(m_A(0, j - 1), m_A(1, j - 1)), m_cartesianPlane));
         lines[j].color = m_color2;
     }
-    target.draw(lines)
+    target.draw(lines);
 }
 
 void Particle::update(float dt)
@@ -200,7 +197,7 @@ void Particle::update(float dt)
     m_ttl -= dt;
     rotate(dt * m_radiansPerSec);
     scale(SCALE);
-    
+
     float dx = m_vx * dt;
     m_vy -= G * dt;
     float dy = m_vy * dt;
@@ -228,8 +225,7 @@ void Particle::scale(double c)
 
 void Particle::translate(double xShift, double yShift)
 {
-    TranslationMatrix T(xShift, yShift);
-    // xShift pls
+    TranslationMatrix T(xShift, yShift, m_A.getCols());
     m_A = T + m_A;
     m_centerCoordinate.x += xShift;
     m_centerCoordinate.y += yShift;
