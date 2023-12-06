@@ -68,9 +68,9 @@ void Engine::update(float dtAsSeconds)
 void Engine::draw()
 {
     m_Window.clear();
-    for (int i = 0; i < m_particles.size(); i++)
+    for (const Particle& particle : m_particles)
     {
-        m_Window.draw(m_particles[i]);
-        m_Window.display();
+        m_Window.draw(particle);
     }
+    m_Window.display();
 }
